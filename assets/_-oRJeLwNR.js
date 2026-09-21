@@ -1,0 +1,1 @@
+import{N as e}from"./index-CqPC-UQW.js";var t=e;export{t as component};
