@@ -1,1 +1,0 @@
-import{I as e}from"./index-BthWPFm3.js";var t=e;export{t as component};
