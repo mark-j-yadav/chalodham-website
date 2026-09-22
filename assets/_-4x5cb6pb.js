@@ -1,1 +1,0 @@
-import{I as e}from"./index-CaPXCJTh.js";var t=e;export{t as component};

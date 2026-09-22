@@ -2,9 +2,9 @@ Options -Indexes
 RewriteEngine On
 RewriteBase /
 
-# SSL on hone ke baad ye 2 lines uncomment karo:
-# RewriteCond %{HTTPS} off
-# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+<Files "razorpay-config.php">
+  Require all denied
+</Files>
 
 RewriteCond %{HTTP_HOST} ^www\.chalodham\.in$ [NC]
 RewriteRule ^ https://chalodham.in%{REQUEST_URI} [L,R=301]
@@ -22,5 +22,4 @@ DirectoryIndex index.html
   ExpiresByType image/jpeg "access plus 30 days"
   ExpiresByType image/png "access plus 30 days"
   ExpiresByType image/svg+xml "access plus 30 days"
-  ExpiresByType image/webp "access plus 30 days"
 </IfModule>
