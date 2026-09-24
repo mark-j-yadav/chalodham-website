@@ -8,12 +8,15 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 }
 
 $cfg = require __DIR__ . "/razorpay-config.php";
+$json = json_decode(file_get_contents("php://input") ?: "{}", true);
+$plan = is_array($json) && (($json["plan"] ?? "") === "family") ? "family" : "single";
+$amount = $plan === "family" ? 9900 : 2900;
 $payload = json_encode([
-  "amount" => (int) $cfg["amount"],
+  "amount" => $amount,
   "currency" => $cfg["currency"],
-  "receipt" => "kundli_" . time(),
+  "receipt" => "kundli_" . $plan . "_" . time(),
   "payment_capture" => 1,
-  "notes" => ["product" => "kundli_pro"],
+  "notes" => ["product" => $plan === "family" ? "kundli_family" : "kundli_single"],
 ]);
 
 $ch = curl_init("https://api.razorpay.com/v1/orders");
@@ -44,4 +47,4 @@ if (!$id) {
   exit;
 }
 
-echo json_encode(["ok" => true, "orderId" => $id, "amount" => (int) $cfg["amount"]]);
+echo json_encode(["ok" => true, "orderId" => $id, "amount" => $amount]);
