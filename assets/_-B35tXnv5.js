@@ -1,1 +1,0 @@
-import{U as e}from"./index-g-c0I-HP.js";var t=e;export{t as component};

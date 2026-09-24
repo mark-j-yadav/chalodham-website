@@ -12,6 +12,8 @@
   <url><loc>https://chalodham.in/journal/banke-bihari-darshan-timing</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://chalodham.in/panchang</loc><changefreq>daily</changefreq><priority>0.7</priority></url>
   <url><loc>https://chalodham.in/kundli</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://chalodham.in/vastu</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+  <url><loc>https://chalodham.in/numerology</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://chalodham.in/store</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://chalodham.in/store/shri-yantra</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://chalodham.in/store/kuber-yantra</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
