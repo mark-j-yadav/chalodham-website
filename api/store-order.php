@@ -54,6 +54,16 @@ foreach ($items as $item) {
   $itemNote[] = $slug . ":" . $qty;
 }
 
+$pin = preg_replace("/\D/", "", (string) ($json["pin"] ?? ""));
+$house = trim((string) ($json["house"] ?? ""));
+$city = trim((string) ($json["city"] ?? ""));
+$state = trim((string) ($json["state"] ?? ""));
+if (strlen($pin) !== 6 || strlen(trim((string) ($json["name"] ?? ""))) < 2 || strlen($house) < 3 || strlen($city) < 2 || strlen($state) < 2) {
+  http_response_code(400);
+  echo json_encode(["ok" => false, "error" => "bad_address"]);
+  exit;
+}
+
 $clip = function ($value, $max) {
   $value = preg_replace("/\s+/", " ", trim((string) $value));
   return substr($value, 0, $max);
@@ -67,10 +77,11 @@ $payload = json_encode([
   "payment_capture" => 1,
   "notes" => [
     "product" => "store",
-    "name" => $clip($json["name"] ?? "", 80),
+    "name" => $clip($json["name"] ?? "", 60),
     "phone" => $clip($json["phone"] ?? "", 20),
-    "city" => $clip($json["city"] ?? "", 40),
-    "address" => $clip($json["address"] ?? "", 200),
+    "house" => $clip($house, 120),
+    "area" => $clip(trim(($json["area"] ?? "") . " " . ($json["landmark"] ?? "")), 120),
+    "place" => $clip($city . ", " . $state . " " . $pin, 80),
     "items" => $clip(implode(",", $itemNote), 240),
   ],
 ]);
