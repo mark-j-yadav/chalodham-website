@@ -8,28 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] !== "POST") {
 }
 
 $prices = [
-  "shri-yantra" => 1499,
-  "kuber-yantra" => 899,
-  "mahalakshmi-yantra" => 999,
-  "ganesh-yantra" => 749,
-  "hanuman-yantra" => 799,
-  "navgraha-yantra" => 1299,
-  "mahamrityunjaya-yantra" => 1099,
-  "saraswati-yantra" => 849,
-  "gayatri-yantra" => 849,
-  "baglamukhi-yantra" => 1199,
-  "vastu-yantra" => 999,
-  "durga-yantra" => 949,
-  "rudraksha-mala" => 1299,
-  "tulsi-mala" => 349,
-  "sphatik-mala" => 799,
-  "chandan-mala" => 899,
-  "haldi-mala" => 399,
-  "kamalgatta-mala" => 549,
-  "moti-mala" => 1499,
-  "karungali-mala" => 1099,
-  "vaijanti-mala" => 649,
-  "lal-chandan-mala" => 1199,
+  "7-mukhi-rudraksha-108" => 499,
 ];
 
 $json = json_decode(file_get_contents("php://input") ?: "{}", true);

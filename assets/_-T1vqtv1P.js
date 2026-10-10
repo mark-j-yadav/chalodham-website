@@ -1,1 +1,0 @@
-import{U as e}from"./index-BamnAauS.js";var t=e;export{t as component};
