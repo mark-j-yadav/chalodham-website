@@ -61,12 +61,19 @@ if (
   || $code >= 300
   || $paidOrder !== $order
   || $currency !== "INR"
-  || !in_array($status, ["captured", "authorized"], true)
+  || $status !== "captured"
   || !cd_amount_allowed($amount)
 ) {
-  http_response_code(400);
-  echo json_encode(["ok" => false, "error" => "unpaid"]);
+  http_response_code($status === "authorized" ? 409 : 400);
+  echo json_encode(["ok" => false, "error" => $status === "authorized" ? "pending" : "unpaid"]);
   exit;
 }
 
-echo json_encode(["ok" => true]);
+echo json_encode([
+  "ok" => true,
+  "paymentId" => $payment,
+  "orderId" => $order,
+  "amountInr" => (int) ($amount / 100),
+  "currency" => "INR",
+  "eventId" => $payment,
+]);
