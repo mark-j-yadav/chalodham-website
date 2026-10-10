@@ -1,9 +1,22 @@
 <?php
 header("Content-Type: application/json; charset=utf-8");
 header("Cache-Control: no-store");
+header("X-Content-Type-Options: nosniff");
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
   http_response_code(405);
   echo json_encode(["ok" => false, "error" => "method"]);
+  exit;
+}
+
+require __DIR__ . "/guard.php";
+if (!cd_allow_origin()) {
+  http_response_code(403);
+  echo json_encode(["ok" => false, "error" => "origin"]);
+  exit;
+}
+if (!cd_rate_limit("store_order", 8, 600)) {
+  http_response_code(429);
+  echo json_encode(["ok" => false, "error" => "slow"]);
   exit;
 }
 
