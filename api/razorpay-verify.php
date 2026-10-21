@@ -55,6 +55,27 @@ $amount = is_array($pay) ? (int) ($pay["amount"] ?? 0) : 0;
 $status = is_array($pay) ? (string) ($pay["status"] ?? "") : "";
 $paidOrder = is_array($pay) ? (string) ($pay["order_id"] ?? "") : "";
 $currency = is_array($pay) ? (string) ($pay["currency"] ?? "") : "";
+$notes = is_array($pay) && isset($pay["notes"]) && is_array($pay["notes"]) ? $pay["notes"] : [];
+$product = (string) ($notes["product"] ?? "");
+if ($product === "" && $paidOrder !== "") {
+  $och = curl_init("https://api.razorpay.com/v1/orders/" . rawurlencode($paidOrder));
+  curl_setopt_array($och, [
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_USERPWD => $cfg["key_id"] . ":" . $cfg["key_secret"],
+    CURLOPT_TIMEOUT => 20,
+  ]);
+  $obody = curl_exec($och);
+  $ocode = (int) curl_getinfo($och, CURLINFO_HTTP_CODE);
+  curl_close($och);
+  $orderRow = json_decode($obody ?: "{}", true);
+  $orderNotes = is_array($orderRow) && isset($orderRow["notes"]) && is_array($orderRow["notes"]) ? $orderRow["notes"] : [];
+  if ($obody !== false && $ocode >= 200 && $ocode < 300) {
+    $product = (string) ($orderNotes["product"] ?? "");
+  }
+}
+$amountOk = $product === "donation"
+  ? ($amount >= 100 && $amount <= 20000000 && $amount % 100 === 0)
+  : cd_amount_allowed($amount);
 if (
   $body === false
   || $code < 200
@@ -62,7 +83,7 @@ if (
   || $paidOrder !== $order
   || $currency !== "INR"
   || $status !== "captured"
-  || !cd_amount_allowed($amount)
+  || !$amountOk
 ) {
   http_response_code($status === "authorized" ? 409 : 400);
   echo json_encode(["ok" => false, "error" => $status === "authorized" ? "pending" : "unpaid"]);
